@@ -1,9 +1,12 @@
+const Jobs = require("../model/jobs");
 const Job = require("../model/jobs");
+
 
 //get all
 const getJobs = (req, res) => {
 
     Job.find()
+        .sort({ postedAt: -1 })
         .then((jobs) => {
             res.json(jobs);
         })
@@ -32,7 +35,7 @@ const createJob = (req, res) => {
         logo: req.body.logo,
         logoBackground: req.body.logoBackground,
         position: req.body.position,
-        postedAt: req.body.postedAt,
+        // postedAt: req.body.postedAt,
         contract: req.body.contract,
         location: req.body.location,
         website: req.body.website,
@@ -70,6 +73,7 @@ const updateJob = (req, res) => {
                 description: req.body.description,
 
                 requirements: req.body.requirements,
+
                 role: req.body.role,
             },
         },
@@ -99,8 +103,6 @@ const getSearchJobOffers = async (req, res) => {
         if (contract) query.contract = contract
         if (location) query.location = location
         
-        console.log(query);
-
         const jobOffers = await Job.find(query)
         res.json(jobOffers)
     } catch (err) {
